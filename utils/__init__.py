@@ -52,6 +52,22 @@ from .translation_utils import (
     translate_all_text
 )
 
+# YouTube preprocessing functions
+from .preprocess_youtube_data import (
+    load_data,
+    drop_leakage_columns,
+    parse_datetime_features,
+    calculate_text_features,
+    calculate_sentiment_features,
+    create_category_features,
+    create_channel_features,
+    create_target_variable,
+    prepare_features_for_modeling,
+    save_preprocessed_data,
+    print_feature_summary,
+    run_preprocessing
+)
+
 # Define what's exported with `from utils import *`
 __all__ = [
     # Preprocessing
@@ -96,4 +112,18 @@ __all__ = [
     'translate_dataframe',
     'run_translation_pipeline',
     'translate_all_text',
+    
+    # YouTube preprocessing
+    'load_data',
+    'drop_leakage_columns',
+    'parse_datetime_features',
+    'calculate_text_features',
+    'calculate_sentiment_features',
+    'create_category_features',
+    'create_channel_features',
+    'create_target_variable',
+    'prepare_features_for_modeling',
+    'save_preprocessed_data',
+    'print_feature_summary',
+    'run_preprocessing',
 ]
