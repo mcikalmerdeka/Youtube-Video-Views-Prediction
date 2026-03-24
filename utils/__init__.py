@@ -43,6 +43,15 @@ from .regression_evals_and_tuning import (
     get_hyperparameters as get_hyperparameters_regression
 )
 
+# Translation utilities
+from .translation_utils import (
+    detect_indian_language_rows,
+    translate_series,
+    translate_dataframe,
+    run_translation_pipeline,
+    translate_all_text
+)
+
 # Define what's exported with `from utils import *`
 __all__ = [
     # Preprocessing
@@ -80,4 +89,11 @@ __all__ = [
     'tune_all_models_regression',
     'get_model_pipeline_regression',
     'get_hyperparameters_regression',
+    
+    # Translation utilities
+    'detect_indian_language_rows',
+    'translate_series',
+    'translate_dataframe',
+    'run_translation_pipeline',
+    'translate_all_text',
 ]
