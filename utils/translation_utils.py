@@ -517,7 +517,7 @@ def run_translation_pipeline(
     ... )
     
     >>> # Load final translated data later
-    >>> final_df = pd.read_csv("data/my_translated_data_final.csv")
+    >>> final_df = pd.read_csv("data/my_translated_data_translated.csv")
     """
     print("── Step 1: Language Detection ──")
     indian_df, non_indian_df = detect_indian_language_rows(
@@ -539,7 +539,7 @@ def run_translation_pipeline(
                 prefix = f"translation_{timestamp}"
             else:
                 prefix = filename_prefix
-            final_path = data_dir / f"{prefix}_final.csv"
+            final_path = data_dir / f"{prefix}_translated.csv"
             df.to_csv(final_path, index=False)
             print(f"   Original data saved to: {final_path}")
         return df
@@ -565,7 +565,7 @@ def run_translation_pipeline(
         else:
             prefix = filename_prefix
         
-        final_path = data_dir / f"{prefix}_final.csv"
+        final_path = data_dir / f"{prefix}_translated.csv"
         final_df.to_csv(final_path, index=False)
         
         print(f"\n── Export Complete ──")
@@ -634,7 +634,7 @@ def translate_all_text(
     ... )
     
     >>> # Load later
-    >>> final_df = pd.read_csv("data/all_translated_final.csv")
+    >>> final_df = pd.read_csv("data/all_translated_translated.csv")
     """
     result = df.copy()
     
@@ -661,7 +661,7 @@ def translate_all_text(
         else:
             prefix = filename_prefix
         
-        final_path = data_dir / f"{prefix}_final.csv"
+        final_path = data_dir / f"{prefix}_translated.csv"
         result.to_csv(final_path, index=False)
         
         print(f"\n── Export Complete ──")
