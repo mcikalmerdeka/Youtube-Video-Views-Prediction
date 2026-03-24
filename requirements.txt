@@ -9,3 +9,8 @@ category-encoders
 joblib
 ipykernel
 gradio
+openpyxl
+deep-translator 
+tenacity
+tqdm
+langid
