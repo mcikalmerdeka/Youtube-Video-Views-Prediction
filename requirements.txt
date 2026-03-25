@@ -15,3 +15,5 @@ tenacity
 tqdm
 langid
 textblob
+contractions
+wordcloud
