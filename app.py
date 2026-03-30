@@ -25,20 +25,24 @@ plt.style.use('seaborn-v0_8-darkgrid')
 sns.set_palette('husl')
 
 
-def load_model_artifacts():
-    """Load model and preprocessing artifacts."""
-    try:
-        model = joblib.load(PROJECT_ROOT / 'models' / 'random_forest_model.joblib')
-        encoders = joblib.load(PROJECT_ROOT / 'models' / 'encoders.joblib')
-        scalers = joblib.load(PROJECT_ROOT / 'models' / 'scalers.joblib')
-        return model, encoders, scalers
-    except Exception as e:
-        print(f"Error loading model artifacts: {e}")
-        return None, None, None
+# Global cache for lazy loading
+_model_cache = None
 
 
-# Load model artifacts globally
-model, encoders, scalers = load_model_artifacts()
+def get_model_artifacts():
+    """Lazy load model and preprocessing artifacts - only loads when first called."""
+    global _model_cache
+    if _model_cache is None:
+        try:
+            model = joblib.load(PROJECT_ROOT / 'models' / 'random_forest_model.joblib')
+            encoders = joblib.load(PROJECT_ROOT / 'models' / 'encoders.joblib')
+            scalers = joblib.load(PROJECT_ROOT / 'models' / 'scalers.joblib')
+            _model_cache = (model, encoders, scalers)
+            print("✅ Model artifacts loaded successfully")
+        except Exception as e:
+            print(f"❌ Error loading model artifacts: {e}")
+            _model_cache = (None, None, None)
+    return _model_cache
 
 
 def calculate_sentiment(text):
@@ -250,6 +254,7 @@ def preprocess_input(data, encoders, scalers):
             df[col] = 0
     
     # Get the exact column order from the model if available
+    model, _, _ = get_model_artifacts()
     if model is not None and hasattr(model, 'feature_names_in_'):
         # Use the model's stored feature order
         training_columns = list(model.feature_names_in_)
@@ -270,6 +275,9 @@ def predict_views(channel_avg_views, channel_median_views, channel_historical_av
                   channel_video_count, title, description, tags, category_id,
                   publish_time):
     """Make prediction for a single video."""
+    
+    # Lazy load model artifacts
+    model, encoders, scalers = get_model_artifacts()
     
     if model is None:
         return "Error: Model not loaded", None, None
@@ -338,6 +346,9 @@ def predict_views(channel_avg_views, channel_median_views, channel_historical_av
 
 def create_feature_importance_plot():
     """Create feature importance plot."""
+    # Lazy load model artifacts
+    model, _, _ = get_model_artifacts()
+    
     if model is None or not hasattr(model, 'feature_importances_'):
         return None
     
