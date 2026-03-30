@@ -1,0 +1,95 @@
+name: Deploy to Hugging Face Space
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy-to-hf:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          lfs: true  # CRITICAL: Enable LFS checkout
+
+      - name: Pull LFS objects
+        run: git lfs pull  # CRITICAL: Download actual files, not pointers
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install huggingface_hub with Xet support
+        run: pip install huggingface_hub hf_xet
+
+      - name: Deploy to Hugging Face Space
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          python - <<'EOF'
+          import os
+          from huggingface_hub import HfApi, list_repo_files
+
+          api = HfApi()
+          repo_id = "mcikalmerdeka/youtube-views-prediction"
+          token = os.environ["HF_TOKEN"]
+
+          print("🚀 Starting deployment to Hugging Face Space...")
+          print(f"Target repository: {repo_id}")
+
+          # Step 1: Delete all existing files to free up space
+          print("\n📦 Step 1: Clearing existing files...")
+          try:
+              existing_files = list(list_repo_files(repo_id, repo_type="space", token=token))
+              if existing_files:
+                  print(f"Found {len(existing_files)} existing files. Deleting...")
+                  # Delete files one by one
+                  for idx, file_path in enumerate(existing_files):
+                      try:
+                          api.delete_file(repo_id, path_in_repo=file_path, repo_type="space", token=token)
+                          if (idx + 1) % 10 == 0:
+                              print(f"  Deleted {idx + 1}/{len(existing_files)} files...")
+                      except Exception as e:
+                          print(f"  Warning: Could not delete {file_path}: {e}")
+                  print("✅ Existing files cleared.")
+              else:
+                  print("ℹ️ No existing files found.")
+          except Exception as e:
+              print(f"⚠️ Warning: Could not list/delete existing files: {e}")
+              print("Proceeding with upload anyway...")
+
+          # Step 2: Upload new files
+          print("\n📤 Step 2: Uploading files...")
+          api.upload_folder(
+              folder_path=".",
+              repo_id=repo_id,
+              repo_type="space",
+              token=token,
+              ignore_patterns=[
+                  ".git/*",
+                  ".gitignore",
+                  ".gitattributes",
+                  ".github/*",
+                  ".venv/*",
+                  "venv/*",
+                  "__pycache__/*",
+                  "*.py[oc]",
+                  ".env",
+                  ".env.*",
+                  "*.ipynb",
+                  "*.log",
+                  "hf_deploy_reference/*",
+                  "reference/*",
+                  ".python-version",
+                  "uv.lock",
+              ],
+          )
+          print("✅ Successfully deployed to Hugging Face Space!")
+          print(f"\n🌐 Visit your Space at: https://huggingface.co/spaces/{repo_id}")
+          EOF
