@@ -1,3 +1,15 @@
+---
+title: YouTube Video Views Prediction
+emoji: 📹
+colorFrom: red
+colorTo: purple
+sdk: gradio
+sdk_version: "6.9.0"
+python_version: "3.12"
+app_file: app.py
+pinned: false
+---
+
 # YouTube Video Views Prediction
 
 ![Project Header](./assets/Project%20Header.jpg)
