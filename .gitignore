@@ -54,3 +54,7 @@ dmypy.json
 
 # Reference
 reference/
+hf_deploy_reference/
+
+# Other
+notebook_fix_clean.ipynb
