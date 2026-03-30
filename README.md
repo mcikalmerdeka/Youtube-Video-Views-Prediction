@@ -16,6 +16,8 @@ pinned: false
 
 A machine learning solution to predict YouTube video view counts before upload, enabling content creators and marketers to optimize their content strategies and maximize audience engagement.
 
+Try the app here: [Hugging Face Spaces](https://huggingface.co/spaces/mcikalmerdeka/youtube-views-prediction)
+
 ## Project Overview
 
 End-to-end data science project that analyzes video metadata, channel performance history, and publishing patterns to predict video view counts. Includes comprehensive EDA, advanced text preprocessing with translation, feature engineering with sentiment analysis, XGBoost regression model, and preprocessing utilities for model deployment.
@@ -100,7 +102,7 @@ jupyter notebook notebook_fix.ipynb
 ## Features
 
 - **Multilingual Text Processing**: Automatic translation of Indian language content (Hindi, Tamil, etc.) to English
-- **Advanced Text Preprocessing**: 
+- **Advanced Text Preprocessing**:
   - HTML/URL/email removal
   - Sentiment analysis using TextBlob
   - Lemmatization and stopword removal
@@ -224,23 +226,23 @@ Critical correction made during development: Removed post-upload features (likes
 
 ## Data Dictionary
 
-| Feature | Description | Type | Importance |
-|---------|-------------|------|------------|
-| channel_historical_avg | Average views of channel's previous videos | Numerical | High |
-| channel_avg_views | Mean views across all channel videos | Numerical | High |
-| channel_median_views | Median views for the channel | Numerical | Medium |
-| channel_video_count | Number of videos from the channel | Numerical | Medium |
-| title_sentiment | Sentiment score of video title (-1 to 1) | Numerical | Medium |
-| description_sentiment | Sentiment score of description | Numerical | Medium |
-| tags_sentiment | Sentiment score of tags | Numerical | Low |
-| len_title | Length of video title in characters | Numerical | Low |
-| desc_len | Length of description | Numerical | Low |
-| No_tags | Number of tags used | Numerical | Low |
-| publish_hour | Hour of publication (0-23) | Numerical | Medium |
-| is_weekend_publish_day | Whether published on weekend | Binary | Low |
-| category_name_* | Video category (one-hot encoded) | Categorical | Medium |
-| publish_day_* | Day of week (one-hot encoded) | Categorical | Low |
-| publish_month_* | Month (one-hot encoded) | Categorical | Low |
+| Feature                | Description                                | Type        | Importance |
+| ---------------------- | ------------------------------------------ | ----------- | ---------- |
+| channel_historical_avg | Average views of channel's previous videos | Numerical   | High       |
+| channel_avg_views      | Mean views across all channel videos       | Numerical   | High       |
+| channel_median_views   | Median views for the channel               | Numerical   | Medium     |
+| channel_video_count    | Number of videos from the channel          | Numerical   | Medium     |
+| title_sentiment        | Sentiment score of video title (-1 to 1)   | Numerical   | Medium     |
+| description_sentiment  | Sentiment score of description             | Numerical   | Medium     |
+| tags_sentiment         | Sentiment score of tags                    | Numerical   | Low        |
+| len_title              | Length of video title in characters        | Numerical   | Low        |
+| desc_len               | Length of description                      | Numerical   | Low        |
+| No_tags                | Number of tags used                        | Numerical   | Low        |
+| publish_hour           | Hour of publication (0-23)                 | Numerical   | Medium     |
+| is_weekend_publish_day | Whether published on weekend               | Binary      | Low        |
+| category*name*\*       | Video category (one-hot encoded)           | Categorical | Medium     |
+| publish*day*\*         | Day of week (one-hot encoded)              | Categorical | Low        |
+| publish*month*\*       | Month (one-hot encoded)                    | Categorical | Low        |
 
 ## Key Insights
 
