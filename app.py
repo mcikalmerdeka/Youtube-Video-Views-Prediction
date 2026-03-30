@@ -514,4 +514,4 @@ with gr.Blocks(title="YouTube Views Predictor") as demo:
     gr.Markdown("---")
 
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(ssr_mode=False)
